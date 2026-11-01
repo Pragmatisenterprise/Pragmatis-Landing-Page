@@ -28,6 +28,7 @@ Sitio web corporativo de una empresa de soluciones de software: landing de una s
 - [Estructura del proyecto](#-estructura-del-proyecto)
 - [Instalación rápida](#-instalación-rápida)
 - [Personalización](#-personalización)
+- [Demos de las plantillas](#-demos-de-las-plantillas)
 - [Despliegue](#-despliegue)
 - [Próximos pasos](#-próximos-pasos)
 
@@ -158,6 +159,8 @@ pragmatis/
 │   └── utils.ts
 ├── .github/workflows/ci.yml
 ├── public/                 # favicon, íconos, og-image.png, logo de firma, robots.txt, sitemap.xml
+│   └── demo/<carpeta>/     # demos estáticas de las plantillas (copiadas con npm run demos:sync)
+├── scripts/demos-sync.mjs  # copia las demos desde Pragmatis-Web-App
 ├── src/
 │   ├── components/
 │   │   ├── Header.tsx          # menú fijo + hamburguesa móvil
@@ -230,6 +233,20 @@ Las claves nunca van en el repo ni en variables del front (`VITE_*`).
 - **WhatsApp, Instagram y dirección:** `src/config/site.ts`. Mientras estén vacíos, los botones correspondientes no se muestran.
 - **Plantillas, proyectos y testimonios:** se administran desde `/admin`. Los testimonios se piden con un enlace de un solo uso (pestaña Testimonios) y solo se publican al aprobarlos.
 - **Logo:** `src/components/Logo.tsx` (símbolo en línea) Las variantes del logo y el script para regenerarlas están en el kit de marca (`brand/03-logo-final/`).
+
+## Demos de las plantillas
+
+Las demos en vivo de las plantillas son archivos estáticos de la misma landing: no hay un Worker, D1 ni R2 por demo. Las compila la plataforma ([Pragmatis-Web-App](../Pragmatis-Web-App), `docs/demo-web.md`): cada demo es la app real corriendo entera en el navegador (SQLite en WebAssembly, estado en IndexedDB, rutas por `#`).
+
+```bash
+cd ../Pragmatis-Web-App && npm run build:demo-web   # → apps/demo-web/dist/<carpeta>/
+cd ../Pragmatis && npm run demos:sync               # copia cada carpeta a public/demo/<carpeta>/
+# otra ruta de origen: DEMOS_DIR=/ruta/a/dist npm run demos:sync
+```
+
+El script reemplaza cada carpeta completa y falla si alguna no tiene `index.html`. Las carpetas de `public/demo/` **se versionan en git**: Workers Builds compila desde este repo y no tiene acceso al de la plataforma. Quedan publicadas en `https://pragmatis.com.co/demo/<carpeta>/` (excluidas de los buscadores en `robots.txt`).
+
+Para agregar una demo nueva: compílala en la plataforma, corre `npm run demos:sync`, haz commit de `public/demo/<carpeta>/` y en `/admin` → Plantillas pon como URL de la demo `/demo/<carpeta>/`.
 
 ## Despliegue
 
