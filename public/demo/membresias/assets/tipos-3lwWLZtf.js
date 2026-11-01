@@ -1,0 +1,1 @@
+const e={efectivo:"Efectivo",tarjeta:"Tarjeta",transferencia:"Transferencia",nequi:"Nequi",daviplata:"Daviplata",link:"Link de pago",otro:"Otro"};function r(a){return a%365===0?a===365?"1 año":`${a/365} años`:a%30===0?a===30?"1 mes":`${a/30} meses`:a%7===0?a===7?"1 semana":`${a/7} semanas`:a===1?"1 día":`${a} días`}export{e as M,r as d};
