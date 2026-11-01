@@ -1,0 +1,1 @@
+import{r as a,k as n}from"./app-OgtV2QRn.js";let e=null;const u=(s=!1)=>((!e||s)&&(e=n("/api/sedes").then(t=>t.sedes).catch(()=>(e=null,[]))),e);function o(){const[s,t]=a.useState([]);return a.useEffect(()=>{let r=!0;return u().then(c=>r&&t(c)),()=>{r=!1}},[]),s}export{u as c,o as u};
