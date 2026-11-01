@@ -244,6 +244,19 @@ cd ../Pragmatis && npm run demos:sync               # copia cada carpeta a publi
 # otra ruta de origen: DEMOS_DIR=/ruta/a/dist npm run demos:sync
 ```
 
+Hoy hay cuatro demos, y cada una es una plantilla en D1:
+
+| Carpeta | Plantilla | Rubro | URL | Migración |
+|---|---|---|---|---|
+| `agenda` | Agenda | Barberías, salones y spas | `/demo/agenda/` | 0004 |
+| `tienda` | Tienda | Tiendas, cafés y minimercados | `/demo/tienda/` | 0005 |
+| `pedidos` | Pedidos | Restaurantes y comidas | `/demo/pedidos/` | 0005 |
+| `membresias` | Membresías | Gimnasios y estudios | `/demo/membresias/` | 0005 |
+
+Las migraciones solo insertan la plantilla y sus módulos si el slug no existe; si ya existe, solo le ponen la `demo_url`. Para que aparezcan en producción hay que correr `npm run db:migrate:remote`.
+
+Todas comparten el origen de la landing, pero cada demo guarda su estado aparte: envuelve `localStorage` y `sessionStorage` con el prefijo `demo:<slug>:` y usa su propia clave en la IndexedDB `pragmatis-demo`. Así, el carrito de una demo no aparece en otra. En tienda y pedidos el pago es simulado: «Aprobar» → «Continuar» lleva al seguimiento del pedido. El panel de pedidos usa `window.prompt` al cancelar un pedido, por eso el iframe de la vista previa incluye `allow-modals`.
+
 El script reemplaza cada carpeta completa y falla si alguna no tiene `index.html`. Las carpetas de `public/demo/` **se versionan en git**: Workers Builds compila desde este repo y no tiene acceso al de la plataforma. Quedan publicadas en `https://pragmatis.com.co/demo/<carpeta>/` (excluidas de los buscadores en `robots.txt`).
 
 Para agregar una demo nueva: compílala en la plataforma, corre `npm run demos:sync`, haz commit de `public/demo/<carpeta>/` y en `/admin` → Plantillas pon como URL de la demo `/demo/<carpeta>/`.
