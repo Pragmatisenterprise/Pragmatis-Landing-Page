@@ -145,8 +145,8 @@ export function Templates() {
               <Field label="Precio desde (COP)" hint="Solo números. Vacío o 0 = no se muestra precio.">
                 <TextInput inputMode="numeric" value={draft.price_from} onChange={set("price_from")} placeholder="450000" />
               </Field>
-              <Field label="URL de la demo" hint="https://… La página debe permitir mostrarse dentro de un iframe.">
-                <TextInput type="url" value={draft.demo_url} onChange={set("demo_url")} placeholder="https://" />
+              <Field label="URL de la demo" hint="/demo/<carpeta>/ para las demos alojadas en esta web, o https://… si es externa (debe permitir mostrarse en un iframe).">
+                <TextInput inputMode="url" value={draft.demo_url} onChange={set("demo_url")} placeholder="/demo/agenda/" />
               </Field>
             </div>
             <ImageUpload label="Miniatura" hint="Captura de la plantilla, idealmente 4:3. Vacío = fondo degradado." value={draft.thumb_url} onChange={(thumb_url) => setDraft({ ...draft, thumb_url })} />
@@ -154,7 +154,7 @@ export function Templates() {
             <div className="flex flex-wrap gap-2">
               <button className="btn-primary" disabled={busy}>{busy ? "Guardando…" : "Guardar"}</button>
               <button type="button" className="btn bg-arena" onClick={() => setDraft(null)}>Cancelar</button>
-              {draft.demo_url.startsWith("https://") && (
+              {(draft.demo_url.startsWith("https://") || draft.demo_url.startsWith("/demo/")) && (
                 <a href={draft.demo_url} target="_blank" rel="noopener noreferrer" className="btn ml-auto text-paramo"><ExternalLink size={16} />Probar la demo</a>
               )}
             </div>

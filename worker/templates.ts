@@ -23,8 +23,10 @@ function parse(body: Record<string, unknown>) {
   if (!Number.isInteger(price) || price < 0 || price > 1_000_000_000) return "Precio inválido";
   if (modules.length > 50 || !modules.every((m) => m && Number.isInteger(m.id) && typeof m.included === "boolean")) return "Módulos inválidos";
   if (thumbUrl === null) return "URL de miniatura inválida";
-  // La demo se muestra en un iframe dentro de un sitio https: tiene que ser https.
-  if (demoUrl === null || (demoUrl && !demoUrl.startsWith("https://"))) return "La URL de la demo debe empezar por https://";
+  // La demo se muestra en un iframe dentro de un sitio https: tiene que ser https o una demo estática de esta misma web (/demo/<carpeta>/).
+  if (demoUrl === null || (demoUrl && !demoUrl.startsWith("https://") && !demoUrl.startsWith("/demo/"))) {
+    return "La URL de la demo debe empezar por https:// o /demo/";
+  }
   return {
     slug, name, business, kind: body.kind, summary, features: JSON.stringify(features), price, thumbUrl, demoUrl,
     published: body.published === false ? 0 : 1,
