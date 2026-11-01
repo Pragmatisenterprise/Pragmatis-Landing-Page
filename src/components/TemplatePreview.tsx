@@ -67,13 +67,16 @@ export function TemplatePreview({ t, onClose }: { t: Template; onClose: () => vo
             !loaded && "opacity-0",
           )}
         >
+          {/* Las demos propias (/demo/…) son del mismo origen: con allow-scripts + allow-same-origin el sandbox no las aísla,
+              pero se mantiene para las demos externas. allow-modals: la demo usa prompt/alert; allow-downloads: CSV;
+              allow-popups-to-escape-sandbox: que los enlaces que abre (WhatsApp) no hereden el sandbox. */}
           <iframe
             key={t.demo_url}
             src={t.demo_url}
             title={`Demo de ${t.name}`}
             onLoad={() => setLoaded(true)}
             className="h-full w-full"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-downloads"
             referrerPolicy="no-referrer"
           />
         </div>
