@@ -255,7 +255,7 @@ Hoy hay cuatro demos, y cada una es una plantilla en D1:
 
 Las migraciones solo insertan la plantilla y sus módulos si el slug no existe; si ya existe, solo le ponen la `demo_url`. Para que aparezcan en producción hay que correr `npm run db:migrate:remote`.
 
-Todas comparten el origen de la landing, pero cada demo guarda su estado aparte: envuelve `localStorage` y `sessionStorage` con el prefijo `demo:<slug>:` y usa su propia clave en la IndexedDB `pragmatis-demo`. Así, el carrito de una demo no aparece en otra. En tienda y pedidos el pago es simulado: «Aprobar» → «Continuar» lleva al seguimiento del pedido. El panel de pedidos usa `window.prompt` al cancelar un pedido, por eso el iframe de la vista previa incluye `allow-modals`.
+Todas comparten el origen de la landing, pero cada demo guarda su estado aparte: envuelve `localStorage` y `sessionStorage` con el prefijo `demo:<slug>:` y usa su propia clave en la IndexedDB `pragmatis-demo`. Así, el carrito de una demo no aparece en otra. En tienda y pedidos el pago es simulado: tras «Aprobar», el seguimiento del pedido se abre solo en unos 2 segundos y el carrito queda vacío. El panel de pedidos usa `window.prompt` al cancelar un pedido, por eso el iframe de la vista previa incluye `allow-modals`.
 
 El script reemplaza cada carpeta completa y falla si alguna no tiene `index.html`. Las carpetas de `public/demo/` **se versionan en git**: Workers Builds compila desde este repo y no tiene acceso al de la plataforma. Quedan publicadas en `https://pragmatis.com.co/demo/<carpeta>/` (excluidas de los buscadores en `robots.txt`).
 
