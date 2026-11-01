@@ -28,5 +28,5 @@ dist-ssr
 .dev.vars
 .wrangler
 
-# Identidad de marca: se comparte fuera del repo
-brand/
+# Identidad de marca: se comparte fuera del repo. Anclada a la raíz: las demos de public/demo/<carpeta>/brand/ sí se versionan.
+/brand/
