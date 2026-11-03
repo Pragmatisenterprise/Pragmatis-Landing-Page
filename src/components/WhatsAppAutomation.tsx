@@ -2,10 +2,11 @@ import { CalendarCheck, Check, CheckCheck, MessageCircle, ShoppingBag, Zap } fro
 import { whatsappUrl } from "@/config/site";
 import { Reveal } from "./Reveal";
 
+// Cada tarjeta lleva un color de la marca; `card`, `icon` y `text` son clases completas para que Tailwind las detecte.
 const benefits = [
-  { icon: Zap, title: "Responde al instante", text: "Precios, horarios y preguntas frecuentes contestadas a cualquier hora, sin que estés pendiente del celular." },
-  { icon: CalendarCheck, title: "Agenda y confirma", text: "Tus clientes reservan, cambian o cancelan su cita por el chat, y reciben un recordatorio antes de llegar." },
-  { icon: ShoppingBag, title: "Toma pedidos", text: "Muestra tu catálogo, recibe el pedido y avisa cuando esté listo, todo dentro de la conversación." },
+  { icon: Zap, card: "bg-paramo-suave", icon_: "bg-paramo text-white", text_: "text-texto2", title: "Responde al instante", text: "Precios, horarios y preguntas frecuentes contestadas a cualquier hora, sin que estés pendiente del celular." },
+  { icon: CalendarCheck, card: "bg-maiz-suave", icon_: "bg-maiz text-tinta", text_: "text-texto2", title: "Agenda y confirma", text: "Tus clientes reservan, cambian o cancelan su cita por el chat, y reciben un recordatorio antes de llegar." },
+  { icon: ShoppingBag, card: "bg-paramo", icon_: "bg-maiz text-tinta", text_: "text-papel/80", title: "Toma pedidos", text: "Muestra tu catálogo, recibe el pedido y avisa cuando esté listo, todo dentro de la conversación." },
 ];
 
 // Conversación de ejemplo: muestra qué hace la automatización sin prometer cifras.
@@ -29,13 +30,13 @@ export function WhatsAppAutomation() {
           <p className="mt-4 max-w-lg text-texto2">
             Conectamos tu número de WhatsApp con respuestas automáticas, citas y pedidos. Tus clientes reciben atención al momento y tú recuperas el tiempo que gastas contestando lo mismo todos los días.
           </p>
-          <ul className="mt-8 space-y-5">
+          <ul className="mt-8 space-y-3">
             {benefits.map((b) => (
-              <li key={b.title} className="flex gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-paramo-suave text-paramo"><b.icon size={20} /></span>
+              <li key={b.title} className={`flex gap-4 rounded-2xl p-4 ${b.card} ${b.card === "bg-paramo" ? "text-papel" : "text-tinta"}`}>
+                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${b.icon_}`}><b.icon size={22} /></span>
                 <div>
                   <h3 className="font-semibold">{b.title}</h3>
-                  <p className="mt-1 text-sm text-texto2">{b.text}</p>
+                  <p className={`mt-1 text-sm ${b.text_}`}>{b.text}</p>
                 </div>
               </li>
             ))}
@@ -49,7 +50,7 @@ export function WhatsAppAutomation() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mx-auto w-full max-w-sm rounded-[2rem] border border-linea bg-arena p-3 shadow-xl">
+          <div className="mx-auto w-full max-w-sm rounded-[2rem] border border-paramo/20 bg-gradient-to-br from-paramo-suave via-arena to-maiz-suave p-3 shadow-xl">
             <div className="overflow-hidden rounded-3xl bg-papel">
               <div className="flex items-center gap-3 bg-paramo px-4 py-3 text-white">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15"><MessageCircle size={18} /></span>
@@ -58,10 +59,10 @@ export function WhatsAppAutomation() {
                   <p className="text-xs text-white/75">Responde en segundos</p>
                 </div>
               </div>
-              <ol className="space-y-2.5 bg-arena/60 p-4" aria-label="Ejemplo de conversación">
+              <ol className="space-y-2.5 bg-paramo-suave/50 p-4" aria-label="Ejemplo de conversación">
                 {chat.map((m, i) => (
                   <li key={i} className={m.from === "bot" ? "flex justify-end" : "flex justify-start"}>
-                    <p className={`max-w-[82%] rounded-2xl px-3.5 py-2 text-sm ${m.from === "bot" ? "rounded-br-md bg-paramo-suave text-tinta" : "rounded-bl-md bg-white text-tinta shadow-sm"}`}>
+                    <p className={`max-w-[82%] rounded-2xl px-3.5 py-2 text-sm ${m.from === "bot" ? "rounded-br-md bg-maiz-suave text-tinta" : "rounded-bl-md bg-white text-tinta shadow-sm"}`}>
                       {m.text}
                       {m.from === "bot" && <CheckCheck size={14} className="ml-1.5 inline-block align-text-bottom text-paramo-puente" aria-hidden />}
                     </p>
