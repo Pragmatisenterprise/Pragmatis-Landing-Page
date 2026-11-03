@@ -32,9 +32,9 @@ function Thumb({ t, className }: { t: Template; className?: string }) {
   return t.thumb_url ? (
     <img src={t.thumb_url} alt="" loading="lazy" draggable={false} className={cn("w-full object-cover", className)} />
   ) : (
-    <div className={cn("flex w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-paramo via-paramo-puente/60 to-grafito", className)}>
+    <div className={cn("flex w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-paramo via-paramo-puente/60 to-grafito px-8 text-center", className)}>
       <LogoSymbol className="h-10 w-auto" />
-      <span className="font-display text-lg font-semibold text-papel">{t.business || t.name}</span>
+      <span className="text-balance font-display text-lg font-semibold leading-snug text-papel">{t.business || t.name}</span>
     </div>
   );
 }
@@ -101,12 +101,12 @@ function Carousel({ items, active, setActive, onOpen }: { items: Template[]; act
               )}
             >
               <Thumb t={t} className="pointer-events-none aspect-[4/3]" />
-              <div className="flex items-center justify-between gap-2 p-4">
-                <div className="min-w-0">
-                  <p className="truncate text-xs text-paramo-luz">{t.business}</p>
-                  <p className="truncate font-display font-semibold text-papel">{t.name}</p>
+              <div className="flex flex-col items-center gap-2 px-6 py-5 text-center">
+                <div className="w-full min-w-0">
+                  <p className="text-balance text-xs leading-snug text-paramo-luz">{t.business}</p>
+                  <p className="mt-0.5 text-balance font-display font-semibold leading-snug text-papel">{t.name}</p>
                 </div>
-                <span className="flex shrink-0 items-center gap-1 rounded-full bg-papel/10 px-2 py-0.5 text-[11px] text-papel/80">
+                <span className="flex shrink-0 items-center gap-1 rounded-full bg-papel/10 px-2.5 py-0.5 text-[11px] text-papel/80">
                   {t.kind === "app" ? <Smartphone size={12} /> : <Globe size={12} />}{kindLabel[t.kind]}
                 </span>
               </div>
@@ -139,9 +139,9 @@ function StaticList({ items, active, setActive }: { items: Template[]; active: n
             className={cn("w-full overflow-hidden rounded-3xl border bg-grafito text-left", i === active ? "border-paramo-luz/60" : "border-papel/10")}
           >
             <Thumb t={t} className="aspect-[4/3]" />
-            <div className="p-4">
-              <p className="text-xs text-paramo-luz">{t.business}</p>
-              <p className="font-display font-semibold text-papel">{t.name}</p>
+            <div className="px-6 py-5 text-center">
+              <p className="text-balance text-xs leading-snug text-paramo-luz">{t.business}</p>
+              <p className="mt-0.5 text-balance font-display font-semibold leading-snug text-papel">{t.name}</p>
             </div>
           </button>
         </li>

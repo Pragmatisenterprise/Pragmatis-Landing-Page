@@ -9,6 +9,7 @@ import { Projects } from "@/components/Projects";
 import { Services } from "@/components/Services";
 import { Templates } from "@/components/Templates";
 import { Testimonials } from "@/components/Testimonials";
+import { WhatsAppAutomation } from "@/components/WhatsAppAutomation";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { site } from "@/config/site";
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Services />
         <Process />
         <Templates />
+        <WhatsAppAutomation />
         <Projects />
         <Testimonials />
         <About />
