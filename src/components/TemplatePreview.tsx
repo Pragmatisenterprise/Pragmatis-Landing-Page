@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, Loader2, Monitor, Smartphone } from "lucide-react";
+import { ArrowLeft, ExternalLink, LayoutDashboard, Loader2, Monitor, Smartphone, Store } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { kindLabel, wantUrl } from "@/lib/templates";
@@ -12,6 +12,11 @@ export function TemplatePreview({ t, onClose }: { t: Template; onClose: () => vo
     t.kind === "app" || window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop",
   );
   const [loaded, setLoaded] = useState(false);
+  // Las demos propias (/demo/…) traen su panel de administración en `#/admin`; las externas no se pueden asumir.
+  const hasAdmin = t.demo_url.startsWith("/demo/");
+  const [view, setView] = useState<"site" | "admin">("site");
+  const src = view === "admin" ? `${t.demo_url.replace(/#.*$/, "")}#/admin` : t.demo_url;
+  const switchView = (v: "site" | "admin") => { if (v !== view) { setLoaded(false); setView(v); } };
   const closeRef = useRef<HTMLButtonElement>(null);
   const want = wantUrl(t);
 
@@ -42,13 +47,19 @@ export function TemplatePreview({ t, onClose }: { t: Template; onClose: () => vo
         </button>
         <div className="min-w-0 flex-1">
           <p className="truncate font-display font-semibold">{t.name}</p>
-          <p className="truncate text-xs text-gris-oscuro">{kindLabel[t.kind]}{t.business && ` · ${t.business}`} · Demo con datos de ejemplo</p>
+          <p className="truncate text-xs text-gris-oscuro">{kindLabel[t.kind]}{t.business && ` · ${t.business}`} · {view === "admin" ? "Panel del negocio: entra con «Entrar a la demo»" : "Demo con datos de ejemplo"}</p>
         </div>
+        {hasAdmin && (
+          <div className="flex rounded-xl bg-papel/10 p-1" role="group" aria-label="Qué parte de la demo ver">
+            <button className={toggle(view === "site")} aria-pressed={view === "site"} onClick={() => switchView("site")}><Store size={14} />Sitio</button>
+            <button className={toggle(view === "admin")} aria-pressed={view === "admin"} onClick={() => switchView("admin")}><LayoutDashboard size={14} />Panel admin</button>
+          </div>
+        )}
         <div className="hidden rounded-xl bg-papel/10 p-1 md:flex" role="group" aria-label="Dispositivo">
           <button className={toggle(device === "desktop")} aria-pressed={device === "desktop"} onClick={() => setDevice("desktop")}><Monitor size={14} />Escritorio</button>
           <button className={toggle(device === "mobile")} aria-pressed={device === "mobile"} onClick={() => setDevice("mobile")}><Smartphone size={14} />Celular</button>
         </div>
-        <a href={t.demo_url} target="_blank" rel="noopener noreferrer" className="p-2 text-papel/70 hover:text-papel" aria-label="Abrir la demo en una pestaña nueva" title="Abrir en pestaña nueva"><ExternalLink size={18} /></a>
+        <a href={src} target="_blank" rel="noopener noreferrer" className="p-2 text-papel/70 hover:text-papel" aria-label="Abrir la demo en una pestaña nueva" title="Abrir en pestaña nueva"><ExternalLink size={18} /></a>
         <a href={want} target={want.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" onClick={want.startsWith("http") ? undefined : onClose} className="btn-primary px-4 py-2">La quiero</a>
       </div>
 
@@ -57,7 +68,7 @@ export function TemplatePreview({ t, onClose }: { t: Template; onClose: () => vo
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-sm text-gris-oscuro">
             <Loader2 className="animate-spin text-paramo-luz" />
             Cargando la demo…
-            <a href={t.demo_url} target="_blank" rel="noopener noreferrer" className="text-paramo-luz hover:underline">¿No carga? Ábrela en una pestaña nueva</a>
+            <a href={src} target="_blank" rel="noopener noreferrer" className="text-paramo-luz hover:underline">¿No carga? Ábrela en una pestaña nueva</a>
           </div>
         )}
         <div
@@ -71,8 +82,8 @@ export function TemplatePreview({ t, onClose }: { t: Template; onClose: () => vo
               pero se mantiene para las demos externas. allow-modals: la demo usa prompt/alert; allow-downloads: CSV;
               allow-popups-to-escape-sandbox: que los enlaces que abre (WhatsApp) no hereden el sandbox. */}
           <iframe
-            key={t.demo_url}
-            src={t.demo_url}
+            key={src}
+            src={src}
             title={`Demo de ${t.name}`}
             onLoad={() => setLoaded(true)}
             className="h-full w-full"
